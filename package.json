@@ -1,0 +1,20 @@
+{
+  "name": "cse340-service-project",
+  "version": "1.0.0",
+  "description": "CSE 340 Service Project",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["cse340", "express", "service-project"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {}
+}
