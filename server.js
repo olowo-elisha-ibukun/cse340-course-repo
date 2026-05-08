@@ -21,17 +21,17 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/organizations', async (req, res) => {
-    res.render('organizations', { title: 'Organizations' });
+    res.render('organizations', { title: 'Partner Organizations' });
 });
 
 app.get('/service-projects', async (req, res) => {
-    res.render('service-projects', { title: 'Service Projects' });
+    res.render('service-projects', { title: 'Current Projects' });
 });
 
 // Route to serve the Categories page
 app.get('/categories', async (req, res) => {
     res.render('categories', { 
-        title: 'Service Project Categories' 
+        title: 'Service Categories' 
     });
 });
 
