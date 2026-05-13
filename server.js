@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 
 dotenv.config();
 
@@ -12,7 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.static('public'));
+app.use(express.static(join(__dirname, 'public')));
+app.use('/images', express.static(join(__dirname, 'images')));
 app.set('view engine', 'ejs');
 
 // Routes
