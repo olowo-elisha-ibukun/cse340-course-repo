@@ -8,7 +8,15 @@
         <div class="organizations-grid">
             <% organizations.forEach(org => { %>
                 <div class="organization-card">
-                    <img src="<%= org.image %>" alt="<%= org.name %>">
+                    <% if (org.name.includes('Environmental')) { %>
+                        <img src="/images/Environmental-Cleanup.jpg" alt="Environmental Cleanup">
+                    <% } else if (org.name.includes('Hunger')) { %>
+                        <img src="/images/Hunger-Food-Security.jpg" alt="Hunger and Food Security">
+                    <% } else if (org.name.includes('Education')) { %>
+                        <img src="/images/Education-Mentorship.jpg" alt="Education and Mentorship">
+                    <% } else { %>
+                        <img src="<%= org.image %>" alt="<%= org.name %>">
+                    <% } %>
                     <h3><%= org.name %></h3>
                     <p><%= org.description %></p>
                 </div>

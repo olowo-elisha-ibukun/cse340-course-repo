@@ -327,6 +327,40 @@ main > .container {
   max-width: var(--max-width-4xl);
 }
 
+/* ========================================
+   Hero Section
+   ======================================== */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+}
+
+.hero img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.hero h1 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-primary);
+}
+
+.hero p {
+  max-width: var(--max-width-2xl);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
 /* Category List */
 .category-list {
   display: grid;

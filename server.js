@@ -48,7 +48,7 @@ app.get('/service-projects', async (req, res) => {
 // Route to serve the Categories page
 app.get('/categories', async (req, res) => {
     res.render('categories', { 
-        title: 'Service Categories',
+        title: 'Service Project Categories',
         year: new Date().getFullYear()
     });
 });
