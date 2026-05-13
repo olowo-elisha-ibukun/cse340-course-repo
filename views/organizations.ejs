@@ -10,10 +10,10 @@
                 <div class="organization-card">
                     <% if (org.name.includes('Environmental')) { %>
                         <img src="/images/Environmental-Cleanup.jpg" alt="Environmental Cleanup">
-                    <% } else if (org.name.includes('Hunger')) { %>
-                        <img src="/images/Hunger-Food-Security.jpg" alt="Hunger and Food Security">
                     <% } else if (org.name.includes('Education')) { %>
                         <img src="/images/Education-Mentorship.jpg" alt="Education and Mentorship">
+                    <% } else if (org.name.includes('Health')) { %>
+                        <img src="/images/Hunger-Food-Security.jpg" alt="Health and Wellness">
                     <% } else { %>
                         <img src="<%= org.image %>" alt="<%= org.name %>">
                     <% } %>

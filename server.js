@@ -25,17 +25,17 @@ app.get('/organizations', async (req, res) => {
         {
             name: 'Community Health Clinic',
             description: 'Providing healthcare services to underserved communities.',
-            image: '/images/organization1.jpeg'
+            image: '/images/Hunger-Food-Security.jpg'
         },
         {
             name: 'Youth Education Initiative',
             description: 'Empowering youth through quality education and mentorship programs.',
-            image: '/images/organization2.jpeg'
+            image: '/images/Education-Mentorship.jpg'
         },
         {
             name: 'Environmental Conservation Society',
             description: 'Dedicated to protecting and preserving our natural environment.',
-            image: '/images/organization3.jpeg'
+            image: '/images/Environmental-Cleanup.jpg'
         }
     ];
     res.render('organizations', { title: 'Partner Organizations', year: new Date().getFullYear(), organizations });
