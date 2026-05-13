@@ -4,6 +4,16 @@
     <div class="container">
         <h2><%= title %></h2>
         <p>Connect with partner organizations making a difference in the community.</p>
+        
+        <div class="organizations-grid">
+            <% organizations.forEach(org => { %>
+                <div class="organization-card">
+                    <img src="<%= org.image %>" alt="<%= org.name %>">
+                    <h3><%= org.name %></h3>
+                    <p><%= org.description %></p>
+                </div>
+            <% }); %>
+        </div>
     </div>
 </main>
 

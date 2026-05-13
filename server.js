@@ -17,27 +17,45 @@ app.set('view engine', 'ejs');
 
 // Routes
 app.get('/', async (req, res) => {
-    res.render('index', { title: 'Home' });
+    res.render('index', { title: 'Home', year: new Date().getFullYear() });
 });
 
 app.get('/organizations', async (req, res) => {
-    res.render('organizations', { title: 'Partner Organizations' });
+    const organizations = [
+        {
+            name: 'Community Health Clinic',
+            description: 'Providing healthcare services to underserved communities.',
+            image: '/images/organization1.jpeg'
+        },
+        {
+            name: 'Youth Education Initiative',
+            description: 'Empowering youth through quality education and mentorship programs.',
+            image: '/images/organization2.jpeg'
+        },
+        {
+            name: 'Environmental Conservation Society',
+            description: 'Dedicated to protecting and preserving our natural environment.',
+            image: '/images/organization3.jpeg'
+        }
+    ];
+    res.render('organizations', { title: 'Partner Organizations', year: new Date().getFullYear(), organizations });
 });
 
 app.get('/service-projects', async (req, res) => {
-    res.render('service-projects', { title: 'Current Projects' });
+    res.render('service-projects', { title: 'Current Projects', year: new Date().getFullYear() });
 });
 
 // Route to serve the Categories page
 app.get('/categories', async (req, res) => {
     res.render('categories', { 
-        title: 'Service Categories' 
+        title: 'Service Categories',
+        year: new Date().getFullYear()
     });
 });
 
 // 404 handler
 app.use((req, res) => {
-    res.status(404).render('404', { title: 'Page Not Found' });
+    res.status(404).render('404', { title: 'Page Not Found', year: new Date().getFullYear() });
 });
 
 // Start server
