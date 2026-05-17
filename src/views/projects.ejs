@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+<main class="projects-container">
+    <h1><%= title %></h1>
+
+    <% if (projects && projects.length) { %>
+        <ul class="project-list">
+            <% projects.forEach(project => { %>
+                <li class="project-item">
+                    <div class="project-card-header">
+                        <% if (project.logo_filename) { %>
+                            <img src="/images/<%= project.logo_filename %>" alt="<%= project.title %> Sponsoring Logo" class="project-logo">
+                        <% } %>
+                        <div>
+                            <p class="project-title">
+                                Date: <%= new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                - <strong><%= project.title %></strong>
+                                (<%= project.organization_name %>)
+                            </p>
+                            <p class="project-location"><strong>Location:</strong> <%= project.location %></p>
+                        </div>
+                    </div>
+                    <p class="project-description"><%= project.description %></p>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No projects are currently available.</p>
+    <% } %>
+</main>
+
+<%- include('partials/footer') %>

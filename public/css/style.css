@@ -143,7 +143,7 @@ body {
   font-weight: var(--font-weight-normal);
   line-height: var(--line-height-normal);
   color: var(--color-text-primary);
-  background-color: var(--color-bg-primary);
+  background-color: var(--color-gray-50);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -325,6 +325,46 @@ main {
 
 main > .container {
   max-width: var(--max-width-4xl);
+}
+
+/* Projects list */
+.project-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.project-logo {
+  width: 75px;
+  height: 75px;
+  max-width: 75px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 0.35rem;
+  background-color: var(--color-bg-primary);
+}
+
+.project-item {
+  list-style: none;
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+  background-color: var(--color-white);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.project-description {
+  margin-top: var(--spacing-sm);
+  color: var(--color-text-secondary);
 }
 
 /* ========================================

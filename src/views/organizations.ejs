@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+
+<main id="main-content">
+    <div class="container">
+        <h2><%= title %></h2>
+        <p>Connect with partner organizations making a difference in the community.</p>
+        
+        <div class="organizations-grid">
+            <% organizations.forEach(org => { %>
+                <div class="organization-card">
+                    <% if (org.name.includes('Environmental')) { %>
+                        <img src="/images/Environmental-Cleanup.jpg" alt="Environmental Cleanup">
+                    <% } else if (org.name.includes('Education')) { %>
+                        <img src="/images/Education-Mentorship.jpg" alt="Education and Mentorship">
+                    <% } else if (org.name.includes('Health')) { %>
+                        <img src="/images/Hunger-Food-Security.jpg" alt="Health and Wellness">
+                    <% } else { %>
+                        <img src="<%= org.image %>" alt="<%= org.name %>">
+                    <% } %>
+                    <h3><%= org.name %></h3>
+                    <p><%= org.description %></p>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/footer') %>
