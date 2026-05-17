@@ -411,6 +411,42 @@ main > .container {
   padding: 0;
 }
 
+.category-tags {
+  margin-bottom: var(--spacing-xl);
+}
+
+.tag-badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.85rem;
+  background-color: var(--color-gray-100);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
+}
+
+.tag-badge:hover,
+.tag-badge:focus {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary-dark);
+}
+
+.tag-badge:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .category-list li {
   background-color: var(--color-bg-primary);
   border: 1px solid var(--color-border);

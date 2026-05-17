@@ -6,7 +6,8 @@ import { dirname, join } from 'path';
 dotenv.config();
 
 const { getAllProjects } = await import('./src/models/projects.js');
-const { getAllCategories } = await import('./src/models/categories.js');
+const { getAllCategories, getCategoriesByProjectId } = await import('./src/models/categories.js');
+const { showCategoryDetailsPage } = await import('./src/controllers/categories.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -55,6 +56,8 @@ app.get('/projects', async (req, res) => {
     res.render('projects', { title: 'Available Service Projects', year: new Date().getFullYear(), projects });
 });
 
+app.get('/project/:id', showProjectDetailsPage);
+
 // Route to serve the Categories page
 app.get('/categories', async (req, res) => {
     const categories = await getAllCategories();
@@ -64,6 +67,33 @@ app.get('/categories', async (req, res) => {
         categories
     });
 });
+
+app.get('/category/:id', showCategoryDetailsPage);
+
+export async function showProjectDetailsPage(req, res, next) {
+    const projectId = req.params.id;
+
+    try {
+        const allProjects = await getAllProjects();
+        const project = allProjects.find(projectItem => String(projectItem.project_id) === String(projectId));
+
+        if (!project) {
+            const err = new Error('Project Not Found');
+            err.status = 404;
+            return next(err);
+        }
+
+        const categories = await getCategoriesByProjectId(projectId);
+        res.render('project', {
+            title: 'Project Details',
+            year: new Date().getFullYear(),
+            project,
+            categories
+        });
+    } catch (error) {
+        next(error);
+    }
+}
 
 // 404 handler
 app.use((req, res) => {

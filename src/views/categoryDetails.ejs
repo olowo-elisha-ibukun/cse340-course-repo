@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+
+<main id="main-content">
+    <div class="container">
+        <h1><%= categoryDetails.name %></h1>
+
+        <% if (categoryDetails.description) { %>
+            <p><%= categoryDetails.description %></p>
+        <% } %>
+
+        <% if (locals.categories && categories.length) { %>
+            <section class="category-tags">
+                <h2>Category Tags</h2>
+                <div class="tag-badges">
+                    <% categories.forEach(category => { %>
+                        <a href="/category/<%= category.category_id %>" class="tag-badge">
+                            <%= category.name %>
+                        </a>
+                    <% }) %>
+                </div>
+            </section>
+        <% } %>
+
+        <section class="project-list">
+            <h2>Assigned Projects</h2>
+            <h2>Assigned Projects</h2>
+
+            <% if (categoryDetails.projects && categoryDetails.projects.length) { %>
+                <ul>
+                    <% categoryDetails.projects.forEach(project => { %>
+                        <li>
+                            <a href="/project/<%= project.project_id %>"><%= project.title %></a>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No projects are currently assigned to this category.</p>
+            <% } %>
+        </section>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

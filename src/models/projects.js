@@ -10,7 +10,7 @@ const getAllProjects = async () => {
             p.project_id, 
             p.title, 
             p.description, 
-            p.location, 
+            p.location,
             p.date, 
             o.name AS organization_name,
             o.logo_filename AS logo_filename
@@ -21,6 +21,23 @@ const getAllProjects = async () => {
 
     const result = await db.query(query);
     return result.rows;
+};
+
+export async function getProjectsByCategoryId(categoryId) {
+    try {
+        const result = await db.query(
+            `SELECT p.*
+             FROM service_project p
+             JOIN project_category pc ON p.project_id = pc.project_id
+             WHERE pc.category_id = $1
+             ORDER BY p.start_date ASC;`,
+            [categoryId]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching projects by category ID:', error);
+        throw error;
+    }
 };
 
 export { getAllProjects };

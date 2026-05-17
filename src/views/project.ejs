@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+<main id="main-content">
+    <div class="container">
+        <h1><%= project.title %></h1>
+
+        <% if (project.organization_name) { %>
+            <p><strong>Organization:</strong> <%= project.organization_name %></p>
+        <% } %>
+
+        <% if (project.date) { %>
+            <p><strong>Start Date:</strong> <%= new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+        <% } %>
+
+        <p><%= project.description %></p>
+
+        <% if (categories && categories.length) { %>
+            <section class="category-tags">
+                <h2>Related Categories</h2>
+                <div class="tag-badge-group">
+                    <% categories.forEach(category => { %>
+                        <a href="/category/<%= category.category_id %>" class="tag-badge">
+                            #<%= category.name %>
+                        </a>
+                    <% }) %>
+                </div>
+            </section>
+        <% } %>
+    </div>
+</main>
+
+<%- include('partials/footer') %>
