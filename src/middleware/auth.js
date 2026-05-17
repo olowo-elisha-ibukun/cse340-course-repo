@@ -1,45 +1,22 @@
-export function requireRole(role) {
-    return function (req, res, next) {
-        const sessionUser = req.session && req.session.user;
+export function requireLogin(req, res, next) {
+    if (!req.session || !req.session.accountData) {
+        return res.redirect('/login');
+    }
+    next();
+}
 
-        if (!sessionUser) {
-            const msg = 'You must be logged in to access that page.';
-            if (typeof req.flash === 'function') {
-                req.flash('error', msg);
-            } else if (req.session) {
-                req.session.flash = req.session.flash || {};
-                req.session.flash.error = msg;
-            }
+export function requireRole(role) {
+    return (req, res, next) => {
+        if (!req.session || !req.session.accountData) {
             return res.redirect('/login');
         }
-
-        if (sessionUser.role_name !== role) {
-            const msg = 'You do not have permission to access that page.';
-            if (typeof req.flash === 'function') {
-                req.flash('error', msg);
-            } else if (req.session) {
-                req.session.flash = req.session.flash || {};
-                req.session.flash.error = msg;
-            }
+        
+        if (req.session.accountData.account_type !== role) {
+            req.flash('notice', `You do not have permission to access this page. Required role: ${role}`);
             return res.redirect('/dashboard');
         }
-
-        return next();
+        
+        next();
     };
 }
 
-export function requireLogin(req, res, next) {
-    const sessionUser = req.session && req.session.user;
-    if (!sessionUser) {
-        const msg = 'You must be logged in to access that page.';
-        if (typeof req.flash === 'function') {
-            req.flash('error', msg);
-        } else if (req.session) {
-            req.session.flash = req.session.flash || {};
-            req.session.flash.error = msg;
-        }
-        return res.redirect('/login');
-    }
-
-    return next();
-}

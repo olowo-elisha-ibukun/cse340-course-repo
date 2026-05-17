@@ -1,14 +1,18 @@
 <%- include('partials/header') %>
 
-<main id="main-content">
+<main id="main-content" class="<%= categoryDetails.category_id === 1 ? 'category-bg-health' : (categoryDetails.category_id === 2 ? 'category-bg-education' : (categoryDetails.category_id === 3 ? 'category-bg-environment' : (categoryDetails.category_id === 4 ? 'category-bg-community' : (categoryDetails.category_id === 5 ? 'category-bg-youth' : (categoryDetails.category_id === 6 ? 'category-bg-animal' : ''))))) %>">
     <div class="container">
-        <h1><%= categoryDetails.name %></h1>
+        <section class="page-actions">
+            <div>
+                <h1><%= categoryDetails.name %></h1>
 
-        <% if (categoryDetails.description) { %>
-            <p><%= categoryDetails.description %></p>
-        <% } %>
+                <% if (categoryDetails.description) { %>
+                    <p><%= categoryDetails.description %></p>
+                <% } %>
+            </div>
+        </section>
 
-        <section class="project-list">
+        <section class="project-list project-list-hero">
             <h2>Assigned Service Projects</h2>
             <% if (projects && projects.length) { %>
                 <ul>

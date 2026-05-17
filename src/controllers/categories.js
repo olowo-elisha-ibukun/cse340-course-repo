@@ -1,5 +1,5 @@
 import { body, validationResult } from 'express-validator';
-import { createCategory, getCategoryDetails, getProjectsByCategoryId, updateCategory } from '../models/categories.js';
+import { createCategory, getCategoryDetails as getCategoryModel, getProjectsByCategoryId, updateCategory } from '../models/categories.js';
 
 export const categoryValidationRules = [
     body('categoryName')
@@ -16,7 +16,7 @@ export function validateCategory(req, res, next) {
         const categoryName = req.body.categoryName || '';
 
         if (req.params.id) {
-            return getCategoryDetails(req.params.id)
+            return getCategoryModel(req.params.id)
                 .then((categoryDetails) => {
                     if (!categoryDetails) {
                         return res.status(404).render('404', {
@@ -53,7 +53,7 @@ export async function showCategoryDetailsPage(req, res, next) {
     const categoryId = req.params.id;
 
     try {
-        const categoryDetails = await getCategoryDetails(categoryId);
+        const categoryDetails = await getCategoryModel(categoryId);
         if (!categoryDetails) {
             const err = new Error('Category Not Found');
             err.status = 404;
@@ -72,6 +72,9 @@ export async function showCategoryDetailsPage(req, res, next) {
         next(error);
     }
 }
+
+// Export as getCategoryDetails for route handler
+export const getCategoryDetails = showCategoryDetailsPage;
 
 export async function showCreateCategoryPage(req, res) {
     res.render('new-category', {
@@ -96,7 +99,7 @@ export async function showEditCategoryPage(req, res, next) {
     const id = req.params.id;
 
     try {
-        const categoryDetails = await getCategoryDetails(id);
+        const categoryDetails = await getCategoryModel(id);
         if (!categoryDetails) {
             return res.status(404).render('404', {
                 title: 'Page Not Found',

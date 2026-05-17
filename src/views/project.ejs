@@ -2,30 +2,37 @@
 
 <main id="main-content">
     <div class="container">
-        <h1><%= project.title %></h1>
+        <section class="page-actions">
+            <div>
+                <h1><%= project.title %></h1>
+                <p>Review the project details and explore other categories related to this service opportunity.</p>
+            </div>
+        </section>
 
-        <% if (project.organization_name) { %>
-            <p><strong>Organization:</strong> <%= project.organization_name %></p>
-        <% } %>
+        <section class="content-panel project-detail-card">
+            <% if (project.organization_name) { %>
+                <p><strong>Organization:</strong> <%= project.organization_name %></p>
+            <% } %>
 
-        <% if (project.date) { %>
-            <p><strong>Start Date:</strong> <%= new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
-        <% } %>
+            <% if (project.date) { %>
+                <p><strong>Start Date:</strong> <%= new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+            <% } %>
 
-        <p><%= project.description %></p>
+            <p><%= project.description %></p>
 
-        <% if (categories && categories.length) { %>
-            <section class="category-tags">
-                <h2>Related Categories</h2>
-                <div class="tag-badge-group">
-                    <% categories.forEach(category => { %>
-                        <a href="/category/<%= category.category_id %>" class="tag-badge">
-                            #<%= category.name %>
-                        </a>
-                    <% }) %>
-                </div>
-            </section>
-        <% } %>
+            <% if (categories && categories.length) { %>
+                <section class="category-tags">
+                    <h2>Related Categories</h2>
+                    <div class="tag-badge-group">
+                        <% categories.forEach(category => { %>
+                            <a href="/category/<%= category.category_id %>" class="tag-badge">
+                                #<%= category.name %>
+                            </a>
+                        <% }) %>
+                    </div>
+                </section>
+            <% } %>
+        </section>
     </div>
 </main>
 

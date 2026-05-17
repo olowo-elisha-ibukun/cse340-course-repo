@@ -1,8 +1,8 @@
-import pool from '../../database/db.js';
+import db from '../../database/db.js';
 
 async function getAllCategories() {
     try {
-        const result = await pool.query('SELECT * FROM category ORDER BY name ASC;');
+        const result = await db.query('SELECT * FROM category ORDER BY name ASC;');
         return result.rows;
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -12,7 +12,7 @@ async function getAllCategories() {
 
 async function getCategoryDetails(categoryId) {
     try {
-        const result = await pool.query(
+        const result = await db.query(
             'SELECT * FROM category WHERE category_id = $1;', 
             [categoryId]
         );
@@ -23,11 +23,11 @@ async function getCategoryDetails(categoryId) {
     }
 }
 
-async function createCategory(name) {
+async function createCategory(name, description) {
     try {
-        const result = await pool.query(
-            'INSERT INTO public.category (name) VALUES ($1) RETURNING *;', 
-            [name]
+        const result = await db.query(
+            'INSERT INTO public.category (name, description) VALUES ($1, $2) RETURNING *;', 
+            [name, description]
         );
         return result.rows[0];
     } catch (error) {
@@ -38,7 +38,7 @@ async function createCategory(name) {
 
 async function updateCategory(categoryId, name) {
     try {
-        const result = await pool.query(
+        const result = await db.query(
             'UPDATE public.category SET name = $2 WHERE category_id = $1 RETURNING *;', 
             [categoryId, name]
         );
@@ -51,7 +51,7 @@ async function updateCategory(categoryId, name) {
 
 async function getCategoriesByProjectId(projectId) {
     try {
-        const result = await pool.query(
+        const result = await db.query(
             `SELECT c.*
              FROM category c
              JOIN project_category pc ON c.category_id = pc.category_id
@@ -68,7 +68,7 @@ async function getCategoriesByProjectId(projectId) {
 
 async function getProjectsByCategoryId(categoryId) {
     try {
-        const result = await pool.query(
+        const result = await db.query(
             `SELECT sp.*
              FROM service_project sp
              JOIN project_category pc ON sp.project_id = pc.project_id

@@ -2,32 +2,41 @@
 
 <main id="main-content">
     <div class="container">
-        <h1><%= title %></h1>
+        <section class="page-actions">
+            <div>
+                <h1><%= title %></h1>
+                <p>All registered users are listed here for administrative review and management.</p>
+            </div>
+        </section>
 
-        <% if (users && users.length) { %>
+        <section class="content-panel">
             <table class="users-table">
                 <thead>
                     <tr>
-                        <th>User ID</th>
-                        <th>Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Email</th>
                         <th>Role</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% users.forEach(user => { %>
+                    <% if (users && users.length) { %>
+                        <% users.forEach(user => { %>
+                            <tr>
+                                <td><%= user.account_firstname %></td>
+                                <td><%= user.account_lastname %></td>
+                                <td><%= user.account_email %></td>
+                                <td><%= user.account_type %></td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
                         <tr>
-                            <td><%= user.user_id %></td>
-                            <td><%= user.name %></td>
-                            <td><%= user.email %></td>
-                            <td><%= user.role_name %></td>
+                            <td colspan="4">No users found.</td>
                         </tr>
-                    <% }) %>
+                    <% } %>
                 </tbody>
             </table>
-        <% } else { %>
-            <p>No users found.</p>
-        <% } %>
+        </section>
     </div>
 </main>
 
