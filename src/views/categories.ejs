@@ -5,22 +5,21 @@
         <h1><%= title %></h1>
         <p>Explore our diverse range of service opportunities organized by category:</p>
         <ul class="category-list">
-            <li>
-                <h3>Environmental</h3>
-                <p>Support conservation efforts and environmental sustainability projects.</p>
-            </li>
-            <li>
-                <h3>Educational</h3>
-                <p>Help students and communities through mentorship and educational programs.</p>
-            </li>
-            <li>
-                <h3>Community Service</h3>
-                <p>Contribute to local community development and social welfare initiatives.</p>
-            </li>
-            <li>
-                <h3>Health and Wellness</h3>
-                <p>Promote health awareness and wellness programs in underserved areas.</p>
-            </li>
+            <% if (categories && categories.length) { %>
+                <% categories.forEach(category => { %>
+                    <li>
+                        <h3><%= category.name %></h3>
+                        <% if (category.description) { %>
+                            <p><%= category.description %></p>
+                        <% } %>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <li>
+                    <h3>No categories available</h3>
+                    <p>Please check back later or load the database.</p>
+                </li>
+            <% } %>
         </ul>
     </div>
 </main>

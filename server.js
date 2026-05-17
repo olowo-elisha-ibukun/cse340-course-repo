@@ -6,6 +6,7 @@ import { dirname, join } from 'path';
 dotenv.config();
 
 const { getAllProjects } = await import('./src/models/projects.js');
+const { getAllCategories } = await import('./src/models/categories.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -56,9 +57,11 @@ app.get('/projects', async (req, res) => {
 
 // Route to serve the Categories page
 app.get('/categories', async (req, res) => {
+    const categories = await getAllCategories();
     res.render('categories', { 
         title: 'Service Project Categories',
-        year: new Date().getFullYear()
+        year: new Date().getFullYear(),
+        categories
     });
 });
 
