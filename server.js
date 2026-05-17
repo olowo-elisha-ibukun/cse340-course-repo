@@ -1,55 +1,23 @@
 import express from 'express';
-import session from 'express-session';
-import connectPgSimple from 'connect-pg-simple';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 dotenv.config();
 
-import pool from './database/db.js';
-import categoriesRouter from './src/routes/categories.js';
-
 const { getAllProjects } = await import('./src/models/projects.js');
-const { getAllCategories, getCategoriesByProjectId } = await import('./src/models/categories.js');
-const { showCategoryDetailsPage } = await import('./src/controllers/categories.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const sessionSecret = process.env.SESSION_SECRET || 'change-this-secret';
-const PgSession = connectPgSimple(session);
-
-if (!process.env.SESSION_SECRET) {
-    console.warn('Warning: SESSION_SECRET is not set. Using fallback secret for local development only.');
-}
-
-app.use(session({
-    store: new PgSession({ pool: pool, tableName: 'session' }),
-    secret: sessionSecret,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false
-    }
-}));
 
 // Middleware
 app.use(express.static(join(__dirname, 'public')));
 app.use('/images', express.static(join(__dirname, 'images')));
-app.use(express.urlencoded({ extended: false }));
 app.set('views', join(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
-
-// Make session user available in all views
-app.use((req, res, next) => {
-    res.locals.user = req.session && req.session.user;
-    next();
-});
-
-app.use('/', categoriesRouter);
 
 // Routes
 app.get('/', async (req, res) => {
@@ -86,44 +54,13 @@ app.get('/projects', async (req, res) => {
     res.render('projects', { title: 'Available Service Projects', year: new Date().getFullYear(), projects });
 });
 
-app.get('/project/:id', showProjectDetailsPage);
-
 // Route to serve the Categories page
 app.get('/categories', async (req, res) => {
-    const categories = await getAllCategories();
     res.render('categories', { 
         title: 'Service Project Categories',
-        year: new Date().getFullYear(),
-        categories
+        year: new Date().getFullYear()
     });
 });
-
-app.get('/category/:id', showCategoryDetailsPage);
-
-export async function showProjectDetailsPage(req, res, next) {
-    const projectId = req.params.id;
-
-    try {
-        const allProjects = await getAllProjects();
-        const project = allProjects.find(projectItem => String(projectItem.project_id) === String(projectId));
-
-        if (!project) {
-            const err = new Error('Project Not Found');
-            err.status = 404;
-            return next(err);
-        }
-
-        const categories = await getCategoriesByProjectId(projectId);
-        res.render('project', {
-            title: 'Project Details',
-            year: new Date().getFullYear(),
-            project,
-            categories
-        });
-    } catch (error) {
-        next(error);
-    }
-}
 
 // 404 handler
 app.use((req, res) => {
@@ -143,20 +80,3 @@ server.on('error', (error) => {
     }
     process.exit(1);
 });
-
-export async function createCategory(name) {
-    const result = await pool.query(
-        'INSERT INTO public.category (name) VALUES ($1) RETURNING *;', 
-        [name]
-    );
-    return result.rows[0];
-}
-
-export async function updateCategory(id, name) {
-    const result = await pool.query(
-        'UPDATE public.category SET name = $2 WHERE category_id = $1 RETURNING *;', 
-        [id, name]
-    );
-    return result.rows[0];
-}
-

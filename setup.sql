@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS category CASCADE;
 DROP TABLE IF EXISTS organization CASCADE;
 
 -- Create organization table
-CREATE TABLE IF NOT EXISTS organization (
+CREATE TABLE organization (
     organization_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS organization (
 );
 
 -- Create category table
-CREATE TABLE IF NOT EXISTS category (
+CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS category (
 );
 
 -- Create service_project table
-CREATE TABLE IF NOT EXISTS service_project (
+CREATE TABLE service_project (
     project_id SERIAL PRIMARY KEY,
     organization_id INTEGER NOT NULL REFERENCES organization(organization_id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS service_project (
 );
 
 -- Create project_category junction table
-CREATE TABLE IF NOT EXISTS project_category (
+CREATE TABLE project_category (
     project_id INTEGER NOT NULL REFERENCES service_project(project_id) ON DELETE CASCADE,
     category_id INTEGER NOT NULL REFERENCES category(category_id) ON DELETE CASCADE,
     PRIMARY KEY (project_id, category_id)
@@ -76,26 +76,3 @@ ALTER TABLE organization OWNER TO elisha;
 ALTER TABLE category OWNER TO elisha;
 ALTER TABLE service_project OWNER TO elisha;
 ALTER TABLE project_category OWNER TO elisha;
-
--- Session table for connect-pg-simple
-CREATE TABLE IF NOT EXISTS "session" (
-    "sid" varchar NOT NULL COLLATE "default",
-    "sess" json NOT NULL,
-    "expire" timestamp(6) NOT NULL
-)
-WITH (OIDS=FALSE);
-
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1
-        FROM pg_constraint
-        WHERE conname = 'session_pkey'
-          AND conrelid = 'session'::regclass
-    ) THEN
-        ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid");
-    END IF;
-END
-$$;
-
-CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");

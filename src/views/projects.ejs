@@ -14,12 +14,10 @@
                         <div>
                             <p class="project-title">
                                 Date: <%= new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
-                                - <strong><a href="/project/<%= project.project_id %>"><%= project.title %></a></strong>
+                                - <strong><%= project.title %></strong>
                                 (<%= project.organization_name %>)
                             </p>
-                            <% if (project.location) { %>
-                                <p class="project-location"><strong>Location:</strong> <%= project.location %></p>
-                            <% } %>
+                            <p class="project-location"><strong>Location:</strong> <%= project.location %></p>
                         </div>
                     </div>
                     <p class="project-description"><%= project.description %></p>
