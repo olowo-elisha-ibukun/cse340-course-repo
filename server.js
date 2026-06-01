@@ -5,6 +5,9 @@ import { dirname, join } from 'path';
 
 dotenv.config();
 
+import pool from './database/db.js';
+import categoriesRouter from './src/routes/categories.js';
+
 const { getAllProjects } = await import('./src/models/projects.js');
 const { getAllCategories, getCategoriesByProjectId } = await import('./src/models/categories.js');
 const { showCategoryDetailsPage } = await import('./src/controllers/categories.js');
@@ -18,8 +21,11 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.static(join(__dirname, 'public')));
 app.use('/images', express.static(join(__dirname, 'images')));
+app.use(express.urlencoded({ extended: false }));
 app.set('views', join(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
+
+app.use('/', categoriesRouter);
 
 // Routes
 app.get('/', async (req, res) => {
@@ -113,3 +119,19 @@ server.on('error', (error) => {
     }
     process.exit(1);
 });
+
+export async function createCategory(name) {
+    const result = await pool.query(
+        'INSERT INTO public.category (name) VALUES ($1) RETURNING *;', 
+        [name]
+    );
+    return result.rows[0];
+}
+
+export async function updateCategory(id, name) {
+    const result = await pool.query(
+        'UPDATE public.category SET name = $2 WHERE category_id = $1 RETURNING *;', 
+        [id, name]
+    );
+    return result.rows[0];
+}

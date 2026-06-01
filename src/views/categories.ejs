@@ -4,11 +4,17 @@
     <div class="container">
         <h1><%= title %></h1>
         <p>Explore our diverse range of service opportunities organized by category:</p>
+        <div class="action-bar">
+            <a class="button button-primary" href="/new-category">Add New Category</a>
+        </div>
         <ul class="category-list">
             <% if (categories && categories.length) { %>
                 <% categories.forEach(category => { %>
                     <li>
-                        <h3><a href="/category/<%= category.category_id %>"><%= category.name %></a></h3>
+                        <div class="category-item-header">
+                            <h3><a href="/category/<%= category.category_id %>"><%= category.name %></a></h3>
+                            <a class="button button-secondary" href="/edit-category/<%= category.category_id %>">Edit</a>
+                        </div>
                         <% if (category.description) { %>
                             <p><%= category.description %></p>
                         <% } %>

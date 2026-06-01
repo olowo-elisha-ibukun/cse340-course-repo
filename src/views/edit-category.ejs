@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+<main id="main-content">
+    <div class="container">
+        <h1>Edit Category</h1>
+
+        <% if (errors && errors.length) { %>
+            <div class="error-summary" role="alert" aria-live="assertive">
+                <h2>There was a problem with your submission</h2>
+                <ul>
+                    <% errors.forEach(error => { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
+        <form action="/edit-category/<%= category.category_id %>" method="POST" class="category-form">
+            <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input
+                    type="text"
+                    id="categoryName"
+                    name="categoryName"
+                    value="<%= category.name %>"
+                    required
+                    maxlength="100"
+                />
+            </div>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

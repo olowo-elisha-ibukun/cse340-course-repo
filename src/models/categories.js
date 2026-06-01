@@ -23,6 +23,32 @@ async function getCategoryDetails(categoryId) {
     }
 }
 
+async function createCategory(name) {
+    try {
+        const result = await pool.query(
+            'INSERT INTO public.category (name) VALUES ($1) RETURNING *;', 
+            [name]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error creating category:', error);
+        throw error;
+    }
+}
+
+async function updateCategory(categoryId, name) {
+    try {
+        const result = await pool.query(
+            'UPDATE public.category SET name = $2 WHERE category_id = $1 RETURNING *;', 
+            [categoryId, name]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error updating category:', error);
+        throw error;
+    }
+}
+
 async function getCategoriesByProjectId(projectId) {
     try {
         const result = await pool.query(
@@ -61,5 +87,7 @@ export {
     getAllCategories,
     getCategoryDetails,
     getCategoriesByProjectId,
-    getProjectsByCategoryId
+    getProjectsByCategoryId,
+    createCategory,
+    updateCategory
 };
