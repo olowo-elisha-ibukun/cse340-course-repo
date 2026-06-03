@@ -1,5 +1,6 @@
 import express from 'express';
 import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -18,9 +19,16 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const sessionSecret = process.env.SESSION_SECRET || 'change-this-secret';
+const PgSession = connectPgSimple(session);
+
+if (!process.env.SESSION_SECRET) {
+    console.warn('Warning: SESSION_SECRET is not set. Using fallback secret for local development only.');
+}
 
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'change-this-secret',
+    store: new PgSession({ pool: pool, tableName: 'session' }),
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: {
