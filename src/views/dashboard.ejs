@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<main id="main-content">
+    <div class="container">
+        <h1>Dashboard</h1>
+
+        <section class="dashboard-overview">
+            <p>Welcome back, <%= user ? user.name : 'Guest' %>.</p>
+            <p>Use the dashboard to manage your account and view activity.</p>
+        </section>
+
+        <!-- Admin-only utilities -->
+        <% if (user && user.role_name === 'admin') { %>
+            <section class="admin-container" aria-label="Administrative Utilities">
+                <h2>Administrative Utilities</h2>
+                <p><a class="button button-primary" href="/users">Manage Registered Users</a></p>
+            </section>
+        <% } %>
+
+    </div>
+</main>
+
+<%- include('partials/footer') %>

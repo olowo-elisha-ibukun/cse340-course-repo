@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -18,12 +19,27 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'change-this-secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false
+    }
+}));
+
 // Middleware
 app.use(express.static(join(__dirname, 'public')));
 app.use('/images', express.static(join(__dirname, 'images')));
 app.use(express.urlencoded({ extended: false }));
 app.set('views', join(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
+
+// Make session user available in all views
+app.use((req, res, next) => {
+    res.locals.user = req.session && req.session.user;
+    next();
+});
 
 app.use('/', categoriesRouter);
 
@@ -135,3 +151,4 @@ export async function updateCategory(id, name) {
     );
     return result.rows[0];
 }
+

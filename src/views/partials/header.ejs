@@ -20,6 +20,11 @@
                     <li><a href="/organizations" class="nav-link">Organizations</a></li>
                     <li><a href="/projects" class="nav-link">Projects</a></li>
                     <li><a href="/categories" class="nav-link">Categories</a></li>
+                    <% if (locals.user) { %>
+                        <li><a href="/logout" class="nav-link">Log Out</a></li>
+                    <% } else { %>
+                        <li><a href="/login" class="nav-link">Login</a></li>
+                    <% } %>
                 </ul>
             </div>
         </nav>
