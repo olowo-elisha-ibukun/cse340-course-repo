@@ -609,7 +609,7 @@ main > .container {
 }
 
 .category-bg-youth {
-  background-image: linear-gradient(rgba(30, 40, 60, 0.78), rgba(18, 28, 45, 0.6)), url('../images/youth-development.jpg');
+  background-image: linear-gradient(rgba(30, 40, 60, 0.78), rgba(18, 28, 45, 0.6)), url('../images/Youth-development.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -666,7 +666,7 @@ main > .container {
 }
 
 .category-bg-community {
-  background-image: linear-gradient(rgba(15, 25, 40, 0.82), rgba(10, 20, 35, 0.6)), url('../images/Community-Support.jpg');
+  background-image: linear-gradient(rgba(15, 25, 40, 0.82), rgba(10, 20, 35, 0.6)), url('../images/Community-support.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
