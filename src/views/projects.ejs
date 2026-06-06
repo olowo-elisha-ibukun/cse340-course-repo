@@ -1,32 +1,44 @@
 <%- include('partials/header') %>
 
-<main class="projects-container">
-    <h1><%= title %></h1>
+<main id="main-content" class="projects-hero">
+    <div class="container">
+        <section class="page-actions">
+            <div>
+                <h1><%= title %></h1>
+                <p>Browse active service projects and add new opportunities for volunteers.</p>
+                <% if (selectedOrgName) { %>
+                    <p class="filtered-by">Showing projects for <strong><%= selectedOrgName %></strong>. <a href="/projects">View all projects</a>.</p>
+                <% } %>
+            </div>
+            <a class="button button-primary" href="/projects/new">Add New Project</a>
+        </section>
 
-    <% if (projects && projects.length) { %>
-        <ul class="project-list">
-            <% projects.forEach(project => { %>
-                <li class="project-item">
-                    <div class="project-card-header">
-                        <% if (project.logo_filename) { %>
-                            <img src="/images/<%= project.logo_filename %>" alt="<%= project.title %> Sponsoring Logo" class="project-logo">
-                        <% } %>
-                        <div>
-                            <p class="project-title">
-                                Date: <%= new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
-                                - <strong><%= project.title %></strong>
-                                (<%= project.organization_name %>)
-                            </p>
-                            <p class="project-location"><strong>Location:</strong> <%= project.location %></p>
-                        </div>
-                    </div>
-                    <p class="project-description"><%= project.description %></p>
-                </li>
-            <% }) %>
-        </ul>
-    <% } else { %>
-        <p>No projects are currently available.</p>
-    <% } %>
+        <section class="content-panel">
+            <% if (projects && projects.length) { %>
+                <ul class="project-list">
+                    <% projects.forEach(project => { %>
+                        <li class="project-item">
+                            <div class="project-card-header">
+                                <% if (project.logo_filename) { %>
+                                    <img class="project-logo" src="/images/<%= project.logo_filename %>" alt="<%= project.organization_name %> logo" />
+                                <% } %>
+                                <div>
+                                    <h3><%= project.title %></h3>
+                                    <p><strong>Organization:</strong> <%= project.organization_name %></p>
+                                </div>
+                            </div>
+                            <p><strong>Date:</strong> <%= project.date ? new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'TBD' %></p>
+                            <p><strong>Location:</strong> <%= project.location %></p>
+                            <p class="project-description"><%= project.description %></p>
+                            <a class="category-edit-link" href="/projects/edit/<%= project.project_id %>">Edit</a>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No projects are currently available.</p>
+            <% } %>
+        </section>
+    </div>
 </main>
 
 <%- include('partials/footer') %>

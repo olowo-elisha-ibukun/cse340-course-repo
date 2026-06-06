@@ -352,6 +352,61 @@ main > .container {
   max-width: 40rem;
 }
 
+.organizations-hero,
+.projects-hero {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--color-white);
+  padding-top: calc(var(--spacing-3xl) + 1rem);
+  padding-bottom: calc(var(--spacing-3xl) + 1rem);
+}
+
+.organizations-hero {
+  background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url('../images/Partner-organizations.png');
+}
+
+.projects-hero {
+  background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url('../images/Available-service-rojects.png');
+}
+
+.organizations-hero .container,
+.projects-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.organizations-hero .page-actions,
+.projects-hero .page-actions {
+  max-width: 52rem;
+  background: transparent;
+  padding: 0;
+}
+
+.organizations-hero .page-actions h1,
+.organizations-hero .page-actions p,
+.organizations-hero .page-actions .filtered-by,
+.projects-hero .page-actions h1,
+.projects-hero .page-actions p,
+.projects-hero .page-actions .filtered-by {
+  color: var(--color-white);
+  text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+}
+
+.organizations-hero .page-actions .button,
+.projects-hero .page-actions .button {
+  background-color: rgba(255,255,255,0.95);
+  color: var(--color-primary);
+}
+
+.organizations-hero .page-actions .button:hover,
+.projects-hero .page-actions .button:hover,
+.organizations-hero .page-actions .button:focus,
+.projects-hero .page-actions .button:focus {
+  background-color: var(--color-white);
+  color: var(--color-primary-dark);
+}
+
 .button,
 .button-primary {
   display: inline-flex;
@@ -907,7 +962,7 @@ main > .container {
   color: var(--color-text-secondary);
 }
 
-.category-list li .category-edit-link {
+.category-edit-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -919,13 +974,17 @@ main > .container {
   text-decoration: none;
   border: 1px solid var(--color-border);
   transition: background-color var(--transition-fast), transform var(--transition-fast);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
 }
 
-.category-list li .category-edit-link:hover,
-.category-list li .category-edit-link:focus {
+.category-edit-link:hover,
+.category-edit-link:focus {
   background-color: var(--color-primary-light);
   color: var(--color-white);
   transform: translateY(-1px);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .category-list li:hover,
@@ -952,6 +1011,53 @@ main > .container {
 .category-list li:focus-within {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+/* Clickable Organization Title */
+.org-card-title-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.org-card-title-link:hover,
+.org-card-title-link:focus {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.view-projects-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  transition: color var(--transition-fast);
+}
+
+.view-projects-link:hover,
+.view-projects-link:focus {
+  color: var(--color-primary-light);
+}
+
+.filtered-by {
+  margin-top: 0.5rem;
+  color: var(--color-text-secondary);
+}
+
+.filtered-by a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.filtered-by a:hover,
+.filtered-by a:focus {
+  color: var(--color-primary-light);
+}
+
+.org-card-clickable {
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 /* ========================================

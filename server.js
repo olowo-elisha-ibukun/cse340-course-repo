@@ -7,12 +7,30 @@ import flash from 'connect-flash';
 
 dotenv.config();
 
-const { getAllProjects } = await import('./src/models/projects.js');
 const { getAllCategories, createCategory } = await import('./src/models/categories.js');
 const { createAccountTable } = await import('./src/models/account.js');
 const { renderLoginPage, renderRegisterPage, handleRegister, handleLogin, handleLogout, buildUsersPage } = await import('./src/controllers/account.js');
 const { default: categoriesRouter } = await import('./src/routes/categories.js');
 const { requireLogin, requireRole } = await import('./src/middleware/auth.js');
+const {
+    showOrganizationsPage,
+    showCreateOrganizationPage,
+    handleCreateOrganization,
+    showEditOrganizationPage,
+    handleEditOrganization,
+    showOrganizationDetailsPage,
+    organizationValidationRules,
+    validateOrganization
+} = await import('./src/controllers/organizations.js');
+const {
+    showProjectsPage,
+    showCreateProjectPage,
+    handleCreateProject,
+    showEditProjectPage,
+    handleEditProject,
+    projectValidationRules,
+    validateProject
+} = await import('./src/controllers/projects.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -46,35 +64,22 @@ app.get('/', async (req, res) => {
     res.render('index', { title: 'Home', year: new Date().getFullYear() });
 });
 
-app.get('/organizations', async (req, res) => {
-    const organizations = [
-        {
-            name: 'Community Health Clinic',
-            description: 'Providing healthcare services to underserved communities.',
-            image: '/images/Hunger-Food-Security.jpg'
-        },
-        {
-            name: 'Youth Education Initiative',
-            description: 'Empowering youth through quality education and mentorship programs.',
-            image: '/images/Education-Mentorship.jpg'
-        },
-        {
-            name: 'Environmental Conservation Society',
-            description: 'Dedicated to protecting and preserving our natural environment.',
-            image: '/images/Environmental-Cleanup.jpg'
-        }
-    ];
-    res.render('organizations', { title: 'Partner Organizations', year: new Date().getFullYear(), organizations });
-});
+app.get('/organizations', showOrganizationsPage);
+app.get('/organizations/new', showCreateOrganizationPage);
+app.post('/organizations/new', organizationValidationRules, validateOrganization, handleCreateOrganization);
+app.get('/organizations/edit/:id', showEditOrganizationPage);
+app.post('/organizations/edit/:id', organizationValidationRules, validateOrganization, handleEditOrganization);
+app.get('/organization/:id', showOrganizationDetailsPage);
 
 app.get('/service-projects', async (req, res) => {
     res.render('service-projects', { title: 'Current Projects', year: new Date().getFullYear() });
 });
 
-app.get('/projects', async (req, res) => {
-    const projects = await getAllProjects();
-    res.render('projects', { title: 'Available Service Projects', year: new Date().getFullYear(), projects });
-});
+app.get('/projects', showProjectsPage);
+app.get('/projects/new', showCreateProjectPage);
+app.post('/projects/new', projectValidationRules, validateProject, handleCreateProject);
+app.get('/projects/edit/:id', showEditProjectPage);
+app.post('/projects/edit/:id', projectValidationRules, validateProject, handleEditProject);
 
 // Route to serve the Categories page
 app.get('/categories', async (req, res) => {

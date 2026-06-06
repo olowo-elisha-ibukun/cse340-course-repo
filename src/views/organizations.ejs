@@ -1,27 +1,34 @@
 <%- include('partials/header') %>
 
-<main id="main-content">
+<main id="main-content" class="organizations-hero">
     <div class="container">
-        <h2><%= title %></h2>
-        <p>Connect with partner organizations making a difference in the community.</p>
-        
-        <div class="organizations-grid">
-            <% organizations.forEach(org => { %>
-                <div class="organization-card">
-                    <% if (org.name.includes('Environmental')) { %>
-                        <img src="/images/Environmental-Cleanup.jpg" alt="Environmental Cleanup">
-                    <% } else if (org.name.includes('Education')) { %>
-                        <img src="/images/Education-Mentorship.jpg" alt="Education and Mentorship">
-                    <% } else if (org.name.includes('Health')) { %>
-                        <img src="/images/Hunger-Food-Security.jpg" alt="Health and Wellness">
-                    <% } else { %>
-                        <img src="<%= org.image %>" alt="<%= org.name %>">
-                    <% } %>
-                    <h3><%= org.name %></h3>
-                    <p><%= org.description %></p>
-                </div>
-            <% }); %>
-        </div>
+        <section class="page-actions">
+            <div>
+                <h1><%= title %></h1>
+                <p>Connect with partner organizations making a difference in the community.</p>
+            </div>
+            <a class="button button-primary" href="/organizations/new">Add New Organization</a>
+        </section>
+
+        <section class="content-panel">
+            <ul class="category-list">
+                <% if (organizations && organizations.length) { %>
+                <% organizations.forEach(org => { %>
+                    <li class="org-card-clickable">
+                        <h3><a href="/organization/<%= org.organization_id %>" class="org-card-title-link"><%= org.name %></a></h3>
+                        <p><%= org.description || 'No description available.' %></p>
+                        <a href="/organization/<%= org.organization_id %>" class="view-projects-link">View Projects →</a>
+                        <a class="category-edit-link" href="/organizations/edit/<%= org.organization_id %>">Edit</a>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <li>
+                    <h3>No organizations available</h3>
+                    <p>Please add a new organization using the button above.</p>
+                </li>
+            <% } %>
+        </ul>
+        </section>
     </div>
 </main>
 

@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+<main id="main-content">
+    <div class="container">
+        <section class="page-actions">
+            <div>
+                <h1><%= organization.name %></h1>
+                <% if (organization.description) { %>
+                    <p><%= organization.description %></p>
+                <% } %>
+                <% if (organization.contact_email || organization.phone_number) { %>
+                    <p>
+                        <% if (organization.contact_email) { %>
+                            <strong>Email:</strong> <%= organization.contact_email %><br>
+                        <% } %>
+                        <% if (organization.phone_number) { %>
+                            <strong>Phone:</strong> <%= organization.phone_number %>
+                        <% } %>
+                    </p>
+                <% } %>
+            </div>
+            <a class="button button-primary" href="/organizations">Back to Organizations</a>
+        </section>
+
+        <section class="content-panel">
+            <h2>Assigned Service Projects</h2>
+            <% if (projects && projects.length) { %>
+                <ul class="project-list">
+                    <% projects.forEach(project => { %>
+                        <li class="project-item">
+                            <a href="/project/<%= project.project_id %>"><h3><%= project.title %></h3></a>
+                            <p><strong>Date:</strong> <%= project.date ? new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'TBD' %></p>
+                            <p><strong>Location:</strong> <%= project.location %></p>
+                            <p><%= project.description %></p>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No service projects are currently assigned to this organization.</p>
+            <% } %>
+        </section>
+    </div>
+</main>
+
+<%- include('partials/footer') %>
