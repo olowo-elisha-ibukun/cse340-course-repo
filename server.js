@@ -31,6 +31,8 @@ const {
     projectValidationRules,
     validateProject
 } = await import('./src/controllers/projects.js');
+const { volunteerProject, unvolunteerProject } = await import('./src/controllers/volunteer.js');
+const { showDashboard } = await import('./src/controllers/users.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -80,6 +82,8 @@ app.get('/projects/new', showCreateProjectPage);
 app.post('/projects/new', projectValidationRules, validateProject, handleCreateProject);
 app.get('/projects/edit/:id', showEditProjectPage);
 app.post('/projects/edit/:id', projectValidationRules, validateProject, handleEditProject);
+app.post('/project/:projectId/volunteer', requireLogin, volunteerProject);
+app.post('/project/:projectId/unvolunteer', requireLogin, unvolunteerProject);
 
 // Route to serve the Categories page
 app.get('/categories', async (req, res) => {
@@ -114,19 +118,7 @@ app.post('/login', handleLogin);
 app.get('/register', renderRegisterPage);
 app.post('/register', handleRegister);
 app.get('/logout', handleLogout);
-app.get('/dashboard', requireLogin, (req, res) => {
-    const accountData = req.session.accountData || null;
-    const user = accountData ? {
-        name: `${accountData.account_firstname} ${accountData.account_lastname}`,
-        role_name: accountData.account_type
-    } : null;
-
-    res.render('dashboard', {
-        title: 'Dashboard',
-        year: new Date().getFullYear(),
-        user
-    });
-});
+app.get('/dashboard', requireLogin, showDashboard);
 
 app.get('/users', requireLogin, requireRole('Admin'), buildUsersPage);
 

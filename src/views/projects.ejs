@@ -23,7 +23,7 @@
                                     <img class="project-logo" src="/images/<%= project.logo_filename %>" alt="<%= project.organization_name %> logo" />
                                 <% } %>
                                 <div>
-                                    <h3><%= project.title %></h3>
+                                    <h3><a href="/project/<%= project.project_id %>"><%= project.title %></a></h3>
                                     <p><strong>Organization:</strong> <%= project.organization_name %></p>
                                 </div>
                             </div>

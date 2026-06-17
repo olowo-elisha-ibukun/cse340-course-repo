@@ -23,10 +23,16 @@ async function createAccountTable() {
 
 async function registerUser(firstname, lastname, email, hashedPassword, accountType = 'Client') {
     try {
+        console.log('registerUser: inserting', { email, accountType: accountType || 'Client' });
         const result = await db.query(
             'INSERT INTO account (account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, $5) RETURNING *;',
-            [firstname, lastname, email, hashedPassword, accountType]
+            [firstname, lastname, email, hashedPassword, accountType || 'Client']
         );
+
+        if (!result || !result.rows || result.rows.length === 0) {
+            throw new Error('Failed to insert new account');
+        }
+
         return result.rows[0];
     } catch (error) {
         console.error('Error registering user:', error);
@@ -36,10 +42,12 @@ async function registerUser(firstname, lastname, email, hashedPassword, accountT
 
 async function getUserByEmail(email) {
     try {
+        console.log('getUserByEmail: querying for', email);
         const result = await db.query(
             'SELECT * FROM account WHERE account_email = $1;',
             [email]
         );
+        console.log('getUserByEmail: query complete, rows found:', result.rows.length);
         return result.rows[0] || null;
     } catch (error) {
         console.error('Error fetching user by email:', error);

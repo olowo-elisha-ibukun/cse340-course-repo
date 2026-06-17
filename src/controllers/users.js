@@ -1,4 +1,5 @@
 import { getAllUsersWithRoles, createUser, getUserByEmail } from '../models/users.js';
+import { getVolunteeredProjectsByAccount } from '../models/volunteer.js';
 import bcrypt from 'bcrypt';
 
 export async function showAdminUsersPage(req, res, next) {
@@ -14,13 +15,34 @@ export async function showAdminUsersPage(req, res, next) {
     }
 }
 
-export function showDashboard(req, res) {
-    const user = req.session && req.session.user;
-    res.render('dashboard', {
-        title: 'Dashboard',
-        year: new Date().getFullYear(),
-        user
-    });
+export async function showDashboard(req, res, next) {
+    try {
+        const accountData = req.session && req.session.accountData;
+        let volunteerProjects = [];
+
+        if (accountData) {
+            try {
+                volunteerProjects = await getVolunteeredProjectsByAccount(accountData.account_id) || [];
+            } catch (err) {
+                console.error('Error fetching volunteered projects for account:', err);
+                volunteerProjects = [];
+            }
+        }
+
+        const user = accountData ? {
+            name: `${accountData.account_firstname} ${accountData.account_lastname}`,
+            role_name: accountData.account_type
+        } : null;
+
+        res.render('dashboard', {
+            title: 'Dashboard',
+            year: new Date().getFullYear(),
+            user,
+            volunteerProjects
+        });
+    } catch (error) {
+        next(error);
+    }
 }
 
 export function showUserRegistrationForm(req, res) {

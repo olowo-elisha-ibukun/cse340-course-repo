@@ -16,6 +16,27 @@
                 <p>Welcome back, <%= locals.accountData.account_firstname %>!</p>
                 <p>Use the dashboard to manage your account and access available features.</p>
             </section>
+            
+            <section class="volunteer-projects mb-4 p-3 bg-light rounded">
+                <h2>Your Volunteer Commitments</h2>
+                <% if (typeof volunteerProjects !== 'undefined' && volunteerProjects && volunteerProjects.length > 0) { %>
+                    <ul class="list-group">
+                        <% volunteerProjects.forEach(function(proj) { %>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/projects/<%= proj.project_id %>"><strong><%= proj.title %></strong></a>
+                                    <div class="text-muted"><%= proj.location %> &middot; <%= proj.date ? new Date(proj.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD' %></div>
+                                </div>
+                                <form action="/project/<%= proj.project_id %>/unvolunteer?redirect=dashboard" method="POST" class="mb-0">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Cancel Commitment</button>
+                                </form>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <div class="alert alert-info">You haven't signed up for any volunteer projects yet. Go to the Projects page to join one!</div>
+                <% } %>
+            </section>
 
             <% if (locals.accountData.account_type === 'Admin') { %>
                 <section class="admin-container" aria-label="Administrative Utilities">

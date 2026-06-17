@@ -1,5 +1,5 @@
 import { body, validationResult } from 'express-validator';
-import { getAllProjects, getProjectsByOrgId, getProjectById, insertProject, updateProject } from '../models/projects.js';
+import { getAllProjects, getProjectsByOrgId, getProjectById, insertProject, updateProject, isUserVolunteering } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
 
@@ -179,12 +179,20 @@ export async function getProjectDetails(req, res, next) {
         }
 
         const categories = await getCategoriesByProjectId(projectId);
+        let isVolunteering = false;
+
+        // Prefer session.accountData.account_id (set after login), fall back to legacy req.session.user.user_id
+        const accountId = req.session?.accountData?.account_id || req.session?.user?.user_id;
+        if (accountId) {
+            isVolunteering = await isUserVolunteering(projectId, accountId);
+        }
 
         res.render('project', {
             title: project.title,
             year: new Date().getFullYear(),
             project,
-            categories
+            categories,
+            isVolunteering
         });
     } catch (error) {
         next(error);

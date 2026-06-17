@@ -98,4 +98,63 @@ async function updateProject({ projectId, title, description, location, date, or
     return result.rows[0];
 }
 
-export { getAllProjects, getProjectsByOrgId, getProjectById, insertProject, updateProject };
+const isUserVolunteering = async (projectId, accountId) => {
+    try {
+        const query = `
+            SELECT 1
+            FROM public.project_volunteer
+            WHERE project_id = $1 AND account_id = $2;
+        `;
+        const result = await db.query(query, [projectId, accountId]);
+        return result.rowCount > 0;
+    } catch (error) {
+        console.error('Error checking volunteer status:', error);
+        throw error;
+    }
+};
+
+const addVolunteer = async (projectId, accountId) => {
+    try {
+        const query = `
+            INSERT INTO public.project_volunteer (project_id, account_id)
+            VALUES ($1, $2)
+            ON CONFLICT DO NOTHING;
+        `;
+        await db.query(query, [projectId, accountId]);
+    } catch (error) {
+        console.error('Error adding volunteer:', error);
+        throw error;
+    }
+};
+
+const removeVolunteer = async (projectId, accountId) => {
+    try {
+        const query = `
+            DELETE FROM public.project_volunteer
+            WHERE project_id = $1 AND account_id = $2;
+        `;
+        await db.query(query, [projectId, accountId]);
+    } catch (error) {
+        console.error('Error removing volunteer:', error);
+        throw error;
+    }
+};
+
+const getProjectsByUserVolunteer = async (accountId) => {
+    try {
+        const query = `
+            SELECT p.project_id, p.title, p.name, p.location, p.date
+            FROM public.service_project p
+            JOIN public.project_volunteer pv ON p.project_id = pv.project_id
+            WHERE pv.account_id = $1
+            ORDER BY p.date ASC;
+        `;
+        const result = await db.query(query, [accountId]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching user volunteer projects:', error);
+        throw error;
+    }
+};
+
+export { getAllProjects, getProjectsByOrgId, getProjectById, insertProject, updateProject, isUserVolunteering, addVolunteer, removeVolunteer, getProjectsByUserVolunteer };

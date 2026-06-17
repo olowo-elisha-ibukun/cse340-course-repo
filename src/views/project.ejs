@@ -20,18 +20,37 @@
 
             <p><%= project.description %></p>
 
-            <% if (categories && categories.length) { %>
-                <section class="category-tags">
-                    <h2>Related Categories</h2>
-                    <div class="tag-badge-group">
-                        <% categories.forEach(category => { %>
+            <section class="project-volunteer-action mt-3">
+                <% if (!locals.accountData) { %>
+                    <p>Please <a href="/login">log in</a> to volunteer for this service project.</p>
+                <% } else { %>
+                    <% if (typeof isVolunteering !== 'undefined' && isVolunteering) { %>
+                        <div class="badge badge-success mb-2">✓ You are volunteering for this project!</div>
+                        <form action="/project/<%= project.project_id %>/unvolunteer" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Stop Volunteering</button>
+                        </form>
+                    <% } else { %>
+                        <form action="/project/<%= project.project_id %>/volunteer" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-success btn-sm">Volunteer for this Project</button>
+                        </form>
+                    <% } %>
+                <% } %>
+            </section>
+
+            <section class="category-tags">
+                <h2>Related Categories</h2>
+                <div class="tag-badge-group">
+                    <% if (categories && categories.length > 0) { %>
+                        <% categories.forEach(function(category) { %>
                             <a href="/category/<%= category.category_id %>" class="tag-badge">
                                 #<%= category.name %>
                             </a>
                         <% }) %>
-                    </div>
-                </section>
-            <% } %>
+                    <% } else { %>
+                        <p>No related categories listed for this project.</p>
+                    <% } %>
+                </div>
+            </section>
         </section>
     </div>
 </main>
