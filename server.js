@@ -58,8 +58,13 @@ app.use((req, res, next) => {
 app.set('views', join(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
 
-// Initialize account table on startup
-createAccountTable().catch(err => console.error('Failed to create account table:', err));
+// Initialize account table on startup only when explicitly requested.
+// Set INIT_DB=true in environment to run schema initialization on service start.
+if (process.env.INIT_DB === 'true') {
+    createAccountTable().catch(err => console.error('Failed to create account table:', err));
+} else {
+    console.log('INIT_DB not set; skipping automatic database initialization.');
+}
 
 // Routes
 app.get('/', async (req, res) => {

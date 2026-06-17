@@ -1,8 +1,7 @@
 import db from '../../database/db.js';
 
 async function createAccountTable() {
-    try {
-        const result = await db.query(`
+    const sql = `
             CREATE TABLE IF NOT EXISTS account (
                 account_id SERIAL PRIMARY KEY,
                 account_firstname VARCHAR(100) NOT NULL,
@@ -12,12 +11,29 @@ async function createAccountTable() {
                 account_type VARCHAR(50) DEFAULT 'Client',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
-        `);
-        console.log('Account table created or already exists.');
-        return result;
-    } catch (error) {
-        console.error('Error creating account table:', error);
-        throw error;
+        `;
+
+    // Retry logic for transient connection errors
+    const maxRetries = 5;
+    let attempt = 0;
+    let delay = 2000; // start with 2s
+
+    while (attempt < maxRetries) {
+        try {
+            const result = await db.query(sql);
+            console.log('Account table created or already exists.');
+            return result;
+        } catch (error) {
+            attempt += 1;
+            console.error(`Attempt ${attempt} - Error creating account table:`, error.code || error.message || error);
+            if (attempt >= maxRetries) {
+                console.error('Max retries reached for createAccountTable. Giving up.');
+                throw error;
+            }
+            // Wait before retrying
+            await new Promise(res => setTimeout(res, delay));
+            delay *= 2; // exponential backoff
+        }
     }
 }
 
